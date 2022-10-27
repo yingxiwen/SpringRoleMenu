@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanyuan.springTestDemo.mapper.myMapper.MyMapper">
+    <resultMap id="MenuResultMap" type="com.lanyuan.springTestDemo.entity.Menu">
+        <id column="menuid" jdbcType="INTEGER" property="menuid" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="parentid" jdbcType="INTEGER" property="parentid" />
+        <result column="status" jdbcType="CHAR" property="status" />
+        <collection property="child" column="menuid" javaType="java.util.List"
+                    ofType="com.lanyuan.springTestDemo.entity.Menu"
+                    select="com.lanyuan.springTestDemo.mapper.myMapper.MyMapper.selectChildListByMenuId"/>
+    </resultMap>
+    <select id="selectMenuListByUserId" parameterType="java.lang.Long" resultMap="MenuResultMap">
+        select * from Menu where menuid in(select menuid from role_menu where roleid in (select roleid from user_role where userid=#{userid}))
+        and status=1 and parentid=-1
+    </select>
+
+    <select id="selectChildListByMenuId" parameterType="java.lang.Long" resultMap="MenuResultMap">
+        select * from Menu where parentid=#{parentid} and status=1 and menuid in (select menuid from role_menu where roleid in
+        select roleid from role_menu where menuid=#{parentid}
+        )
+    </select>
+
+    <insert id="insertRoleToUserDefault" parameterType="java.lang.Long">
+        insert into user_role(userid,roleid) values (#{userid},1)
+    </insert>
+</mapper>

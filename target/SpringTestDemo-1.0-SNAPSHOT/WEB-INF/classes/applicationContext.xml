@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 读取 properties -->
+    <context:property-placeholder location="classpath:jdbc.properties" />
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!-- 事务管理器，依赖于数据源 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- 注册事务管理器驱动，开启事务注解 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- 配置MyBatis工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据源 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 指定MyBatis核心配置文件 -->
+        <property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
+    </bean>
+
+    <!--扫描mapper接⼝，使⽤的依然是mybatis原⽣的扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.lanyuan.springTestDemo.mapper"/>
+    </bean>
+
+
+    <!--
+   配置service层注解扫描和基于aop的声明式的事务
+   -->
+    <context:component-scan base-package="com.lanyuan.springTestDemo.service"></context:component-scan>
+
+    <!--1 准备目标类 通过service注解已经将业务类放入spring容器-->
+
+
+    <!--3 将通知织入目标方法前后-->
+    <tx:advice id="txadvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="pc" expression="execution(* com.sc.ssm.service.impl.*.*(..))"></aop:pointcut>
+        <aop:advisor advice-ref="txadvice" pointcut-ref="pc"></aop:advisor>
+    </aop:config>
+
+
+</beans>

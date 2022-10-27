@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <package name="com.lanyuan.springTestDemo.entity"></package>
+    </typeAliases>
+
+    <!--mybatis分页插件  -->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="offsetAsPageNum" value="true" />
+            <property name="rowBoundsWithCount" value="true" />
+            <!--pageSize=0时，是否查询出全部结果，默认为false-->
+            <property name="pageSizeZero" value="true" />
+            <!--分页合理化参数，默认文false；pageNum<=0，查询第一页；pageNum>总页数，查询最后一页-->
+            <property name="reasonable" value="true" />
+            <property name="params"
+                      value="pageNum=pageHelperStart;pageSize=pageHelperRows;" />
+            <property name="supportMethodsArguments" value="false" />
+            <property name="returnPageInfo" value="none" />
+        </plugin>
+    </plugins>
+
+
+</configuration>
