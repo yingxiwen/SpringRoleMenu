@@ -55,9 +55,10 @@
     </tx:advice>
 
     <aop:config>
-        <aop:pointcut id="pc" expression="execution(* com.sc.ssm.service.impl.*.*(..))"></aop:pointcut>
+        <aop:pointcut id="pc" expression="execution(* com.lanyuan.springTestDemo.service.impl.*.*(..))"></aop:pointcut>
         <aop:advisor advice-ref="txadvice" pointcut-ref="pc"></aop:advisor>
     </aop:config>
+
 
 
 </beans>

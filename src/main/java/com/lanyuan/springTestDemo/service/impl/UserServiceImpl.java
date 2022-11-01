@@ -75,4 +75,9 @@ public class UserServiceImpl implements UserService {
         List<User> users = userMapper.selectByExample(example);
         return users;
     }
+
+    @Override
+    public int insertRoleToUserDefault(long id) {
+        return myMapper.insertRoleToUserDefault(id);
+    }
 }

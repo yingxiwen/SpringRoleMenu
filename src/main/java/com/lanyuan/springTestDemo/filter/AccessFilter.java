@@ -18,8 +18,10 @@ public class AccessFilter implements Filter {
         //servletRequest 是个接口，HttpServletRequest 是实现，但是有些方法是HttpServletRequest独有的，如：getSession
         //HttpServletRequest接口是继承servletRequest接口，增加了和http相关的方法
         HttpServletRequest httpRequest= (HttpServletRequest) request;
+        String origin = httpRequest.getHeader("Origin");
         HttpServletResponse httpResponse= (HttpServletResponse) response;
-        httpResponse.setHeader("Access-Control-Allow-Origin","*");
+        httpResponse.addHeader("Access-Control-Allow-Credentials", "true");
+        httpResponse.setHeader("Access-Control-Allow-Origin",origin);
         chain.doFilter(request,response);
     }
 

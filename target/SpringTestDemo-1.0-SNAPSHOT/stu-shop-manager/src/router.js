@@ -5,6 +5,9 @@ import Main from './main'
 import List from "./pages/admin/products/List";
 import Register from './pages/register'
 import Error from './pages/error'
+import RoleList from './pages/role/List'
+import RoleMenu from './pages/menu/menutree'
+import UserMenu from './pages/menu/userTree'
 
 
 
@@ -34,6 +37,9 @@ class App extends Component {
                     <Route path='/admin' element={<Main/>}>
                         <Route index element={<Index/>}/>
                         <Route path='list' element={<List/>}></Route>
+                        <Route path='rolelist' element={<RoleList/>}/>
+                        <Route path='usermenu' element={<UserMenu/>}/>
+                        <Route path='rolemenu' element={<RoleMenu/>}/>
                     </Route>
                     <Route path='*' element={<Error/>}/>
                 </Routes>

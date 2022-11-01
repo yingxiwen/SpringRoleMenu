@@ -14,6 +14,7 @@ import ContentApp from './App';
 import {BrowserRouter, Routes, Route, Outlet, Link, Navigate} from 'react-router-dom';
 import axios from "axios";
 import qs from 'qs'
+import './main.css'
 
 
 const {SubMenu} = Menu
@@ -73,7 +74,8 @@ export default class App extends React.Component {
     render() {
         if (!window.localStorage.getItem("user")) {
             alert("请先登录")
-            return <Navigate to='/'/>
+            window.location="/"
+            return
         }
 
 
@@ -119,7 +121,7 @@ export default class App extends React.Component {
                                             {
                                                 v.child.map((value, key) => {
                                                     return (
-                                                        <Menu.Item key={key}>
+                                                        <Menu.Item key={k+'item'+key}>
                                                             <Link to={value.url}>{value.name}</Link>
                                                         </Menu.Item>
                                                     )

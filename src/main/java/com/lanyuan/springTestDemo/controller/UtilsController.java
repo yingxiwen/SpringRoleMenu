@@ -1,10 +1,13 @@
 package com.lanyuan.springTestDemo.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
@@ -30,7 +33,7 @@ public class UtilsController {
         //获取画笔工具 一系列工具的集合
         Graphics graphics = image.getGraphics();
         //设置粉色
-        graphics.setColor(Color.pink);
+        graphics.setColor(Color.gray);
         //0,0代表从矩形左上角开始
         graphics.fillRect(0,0,width,height);
 
@@ -46,10 +49,12 @@ public class UtilsController {
             sb.append(c);
             graphics.drawString(c+"",width/5*i,height/2);
         }
+        System.out.println("验证码请求的sessionuid是"+session.getId());
+        response.addCookie(new Cookie("login_code",sb.toString()));
         ServletContext servletContext = session.getServletContext();
         servletContext.setAttribute("login_code",sb.toString());
 
-        graphics.setColor(Color.green);
+        graphics.setColor(Color.white);
         for (int i = 1; i <= 10; i++) {
             int x1=random.nextInt(width);
             int x2=random.nextInt(width);
@@ -61,13 +66,5 @@ public class UtilsController {
         ImageIO.write(image,"jpg",response.getOutputStream());
     }
 
-    @RequestMapping("/getCheckcodeStr")
-    public String getCheckcodeStr(HttpSession session){
-        ServletContext servletContext = session.getServletContext();
-        Object login_code1 = servletContext.getAttribute("login_code");
-        if (login_code1!=null){
-            return login_code1.toString();
-        }
-        return null;
-    }
+
 }

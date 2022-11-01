@@ -19,4 +19,6 @@ public interface UserService {
     public int insertUser(User user);
 
     public List<User> selectUserByUsername(String username);
+
+    public int insertRoleToUserDefault(long id);
 }

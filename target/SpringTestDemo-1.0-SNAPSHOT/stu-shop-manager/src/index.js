@@ -8,8 +8,11 @@ import Login from './pages/login';
 import List from './pages/admin/products/List';
 import Main from './main'
 import Routers from './router'
-
+import axios from 'axios'
 import { createRoot } from 'react-dom/client';
+axios.defaults.withCredentials=true;
+
+
 
 
 const container = document.getElementById('root');

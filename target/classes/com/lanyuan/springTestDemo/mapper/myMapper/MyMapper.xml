@@ -16,13 +16,36 @@
         and status=1 and parentid=-1
     </select>
 
+    <select id="selectParentMenuList"  resultMap="MenuResultMap">
+        select * from Menu where parentid=-1 and status=1
+    </select>
+
     <select id="selectChildListByMenuId" parameterType="java.lang.Long" resultMap="MenuResultMap">
-        select * from Menu where parentid=#{parentid} and status=1 and menuid in (select menuid from role_menu where roleid in
-        select roleid from role_menu where menuid=#{parentid}
-        )
+        select * from Menu where parentid=#{parentid} and status=1
     </select>
 
     <insert id="insertRoleToUserDefault" parameterType="java.lang.Long">
-        insert into user_role(userid,roleid) values (#{userid},1)
+        insert into user_role(userid,roleid) values (#{userid},2)
+    </insert>
+
+    <delete id="deleteRoleMenuByRoleid" parameterType="java.lang.Long">
+        delete from role_menu where roleid=#{roleid}
+    </delete>
+
+    <insert id="insertRoleMenuByRoleidAndMenuid">
+        insert into role_menu(roleid,menuid) values
+        <foreach collection="menuid" item="mid" separator=",">
+
+                (#{roleid},#{mid})
+
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRoleByUserId" parameterType="java.lang.Long">
+        delete from user_role where userid=#{userid}
+    </delete>
+
+    <insert id="insertUserRoleByUseridAndRoleid">
+        insert into user_role(userid,roleid) values(#{userid},#{roleid})
     </insert>
 </mapper>
