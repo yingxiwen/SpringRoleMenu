@@ -45,6 +45,10 @@
         delete from user_role where userid=#{userid}
     </delete>
 
+    <delete id="deleteUserFromUserRole" parameterType="java.lang.Long">
+        delete from user_role where userid=#{userid}
+    </delete>
+
     <insert id="insertUserRoleByUseridAndRoleid">
         insert into user_role(userid,roleid) values(#{userid},#{roleid})
     </insert>

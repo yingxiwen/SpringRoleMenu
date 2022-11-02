@@ -21,4 +21,6 @@ public interface MyMapper {
     public int deleteUserRoleByUserId(long userid);
 
     public int insertUserRoleByUseridAndRoleid(Map<String,Object> params);
+
+    public int deleteUserFromUserRole(long userid);
 }
