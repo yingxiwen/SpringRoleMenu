@@ -30,19 +30,22 @@ public class MenuController {
 
     //给角色分配权限
     @RequestMapping("/giveMenuToRole")
-    public int giveMenuToRole(Long roleid,Long[] menuid){
+    public String giveMenuToRole(Long roleid,Long[] menuid){
         if (roleid==null){
-            return 0;
+            return "请选择角色";
         }
-        return menuService.insertRoleMenu(roleid,menuid);
+        int i = menuService.insertRoleMenu(roleid, menuid);
+
+        return "分配成功";
     }
 
     //给用户分配角色
     @RequestMapping("/giveRoleToUser")
-    public int giveRoleToUser(Long userid,Long roleid){
+    public String giveRoleToUser(Long userid,Long roleid){
         if (userid==null||roleid==null){
-            return 0;
+            return "添加失败";
         }
-        return menuService.insertUserRole(userid,roleid);
+        int i = menuService.insertUserRole(userid, roleid);
+        return "添加成功";
     }
 }

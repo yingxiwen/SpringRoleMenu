@@ -22,19 +22,29 @@ public class RoleController {
     }
 
     @RequestMapping("/deleteRoleById/{id}")
-    public int deleteRoleById(@PathVariable("id")long roleid){
-        return roleService.deleteRoleById(roleid);
+    public String deleteRoleById(@PathVariable("id")long roleid){
+        int i = roleService.deleteRoleById(roleid);
+        if (i==0){
+            return "删除失败";
+        }else {
+            return "成功删除" + i + "个角色";
+        }
     }
 
     //修改根据主键更新role 不可以更新空值
     @RequestMapping("/edit")
-    public int edit(Role role){
-        return roleService.updateRole(role);
+    public String edit(Role role){
+        int i = roleService.updateRole(role);
+        return "修改成功";
     }
 
     //使用的是受保护的新增 数据中有null的话不会生成该字段部分的sql语句
     @RequestMapping("/addRole")
-    public int  addRole(Role role){
-        return roleService.insertRole(role);
+    public String  addRole(Role role){
+        int i = roleService.insertRole(role);
+        if (i==0){
+            return "添加失败";
+        }
+        return "添加成功";
     }
 }

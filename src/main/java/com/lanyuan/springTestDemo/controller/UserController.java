@@ -29,8 +29,12 @@ public class UserController {
 
 
     @RequestMapping("/deleteUserById/{userid}")
-    public int deleteUserById(@PathVariable("userid")long userid){
-        return userService.deleteUserById(userid);
+    public String deleteUserById(@PathVariable("userid")long userid){
+        int i = userService.deleteUserById(userid);
+        if (i==0){
+            return "删除失败";
+        }
+        return "成功删除"+i+"个用户";
     }
 
     /*
@@ -57,7 +61,7 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public User login(User user, HttpServletRequest request, String checkcode){
+    public User login( User user, HttpServletRequest request, String checkcode){
         System.out.println("登录请求的session是"+request.getSession().getId());
         ServletContext servletContext = request.getSession().getServletContext();
         Object login_code = servletContext.getAttribute("login_code");
@@ -75,8 +79,9 @@ public class UserController {
     }
 
     @RequestMapping("/edit")
-    public int edit(User user){
-        return userService.updateUser(user);
+    public String edit(User user){
+        int i = userService.updateUser(user);
+        return "修改成功";
     }
 
     //查询用户所拥有的权限 包括层级关系

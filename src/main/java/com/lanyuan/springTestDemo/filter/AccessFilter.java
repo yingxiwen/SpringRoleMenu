@@ -20,6 +20,7 @@ public class AccessFilter implements Filter {
         HttpServletRequest httpRequest= (HttpServletRequest) request;
         String origin = httpRequest.getHeader("Origin");
         HttpServletResponse httpResponse= (HttpServletResponse) response;
+        httpRequest.setCharacterEncoding("utf-8");
         httpResponse.addHeader("Access-Control-Allow-Credentials", "true");
         httpResponse.setHeader("Access-Control-Allow-Origin",origin);
         chain.doFilter(request,response);

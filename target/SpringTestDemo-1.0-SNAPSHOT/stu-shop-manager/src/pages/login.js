@@ -1,5 +1,4 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
 import 'jquery/dist/jquery.min.js';
 import 'bootstrap/dist/css/bootstrap.css'
 import './login.css'
