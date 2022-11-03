@@ -1,6 +1,7 @@
 package com.lanyuan.springTestDemo.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.lanyuan.springTestDemo.entity.Menu;
 import com.lanyuan.springTestDemo.entity.User;
 import com.lanyuan.springTestDemo.service.UserService;
@@ -22,9 +23,16 @@ public class UserController {
     private UserService userService;
 
     //查询所有用户并返回
-    @RequestMapping("/getUserList")
+    @RequestMapping("/getUserMenu")
     public List<User> getUserList(){
        return userService.getUserList();
+    }
+
+    //查询所有用户并返回
+    @RequestMapping("/getUserList")
+    public PageInfo<User> getUserListPage(@RequestParam(defaultValue = "1") Integer pageIndex,@RequestParam(defaultValue = "5") Integer pageSize){
+
+       return userService.getUserList(pageIndex,pageSize);
     }
 
 

@@ -31,11 +31,7 @@ export default class  App extends React.Component{
     editOk=()=>{
         axios.post("http://127.0.0.1:8080/demo/user/edit",QS.stringify(this.state.user)).then((response)=>{
             this.setState({isModalOpen:false});
-            if (response.data==0){
-                alert("修改失败");
-            } else {
-            alert("修改成功")
-            }
+            alert(response.data)
             window.location=window.location
         })
     }

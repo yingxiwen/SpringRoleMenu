@@ -52,4 +52,12 @@
     <insert id="insertUserRoleByUseridAndRoleid">
         insert into user_role(userid,roleid) values(#{userid},#{roleid})
     </insert>
+
+    <delete id="deleteRoleFromRoleMenu" parameterType="java.lang.Long">
+        delete from role_menu where roleid=#{roleid}
+    </delete>
+
+    <delete id="deleteRoleFromUserRole" parameterType="java.lang.Long">
+        delete from user_role where roleid=#{roleid}
+    </delete>
 </mapper>

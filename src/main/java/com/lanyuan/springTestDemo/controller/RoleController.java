@@ -1,9 +1,11 @@
 package com.lanyuan.springTestDemo.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.lanyuan.springTestDemo.entity.Role;
 import com.lanyuan.springTestDemo.service.RoleService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -16,9 +18,14 @@ public class RoleController {
     @Resource
     private RoleService roleService;
 
-    @RequestMapping("/getRoleList")
+    @RequestMapping("/getRoleMenu")
     public List<Role> getRoleList(){
         return roleService.getRoleList();
+    }
+
+    @RequestMapping("/getRoleList")
+    public PageInfo<Role> getRoleList(@RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "5") Integer pageSize){
+        return roleService.getRoleList(pageIndex,pageSize);
     }
 
     @RequestMapping("/deleteRoleById/{id}")

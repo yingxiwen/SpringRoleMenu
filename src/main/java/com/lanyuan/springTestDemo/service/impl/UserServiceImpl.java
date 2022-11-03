@@ -1,5 +1,7 @@
 package com.lanyuan.springTestDemo.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lanyuan.springTestDemo.entity.Menu;
 import com.lanyuan.springTestDemo.entity.User;
 import com.lanyuan.springTestDemo.entity.UserExample;
@@ -24,6 +26,13 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserList() {
         List<User> users = userMapper.selectByExample(null);
         return users;
+    }
+
+    @Override
+    public PageInfo<User> getUserList(Integer pageIndex, Integer pageSize) {
+        PageHelper.startPage(pageIndex,pageSize);
+        List<User> users = userMapper.selectByExample(null);
+        return new PageInfo<User>(users,5);
     }
 
     @Override

@@ -32,20 +32,49 @@ export default class TableList extends Component {
         super(props);
         this.state = {
             list:[],
-
+            total:0,
+            pageIndex:1,
+            pageSize:5
         };
     }
 
     componentDidMount(){
+        this.getUserList()
+        // const page={
+        //     pageIndex:1,
+        //     pageSize:5
+        // }
+        // axios.get("http://127.0.0.1:8080/demo/user/getUserListPage",page)
+        //     .then((response)=>{
+        //         console.log(window.location)
+        //         console.log(response.data);
+        //         console.log(qs.parse(window.localStorage.getItem("user")))
+        //         this.setState({
+        //             list:response.data.list,
+        //             pageIndex:response.data.pageNum,
+        //             total:response.data.total
+        //         })
+        //         console.log(this.state.total)
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     })
+    }
 
-        axios.get("http://127.0.0.1:8080/demo/user/getUserList")
+    getUserList=(pageIndex,pageSize)=>{
+        const page={
+            pageIndex:pageIndex,
+            pageSize:pageSize
+        }
+        axios.get("http://127.0.0.1:8080/demo/user/getUserList?"+qs.stringify(page))
             .then((response)=>{
-                console.log(window.location)
-                console.log(response.data);
-                console.log(qs.parse(window.localStorage.getItem("user")))
+
                 this.setState({
-                    list:response.data,
+                    list:response.data.list,
+                    pageIndex:response.data.pageNum,
+                    total:response.data.total
                 })
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -112,13 +141,9 @@ export default class TableList extends Component {
     // }
     // 删除
     delete(id) {
-        axios.post(uri+id).then((response)=>{
-            if(response.data==0){
-                alert("删除失败");
-            }else {
-                console.log(response.data);
-                alert("成功删除"+response.data+"个用户");
-            }
+        axios.get(uri+id).then((response)=>{
+            console.log(response)
+           alert(response.data)
             window.location=window.location
         })
     }
@@ -129,7 +154,19 @@ export default class TableList extends Component {
         }
         return (
             <>
-                <Table dataSource={this.state.list} columns={this.getColumns()} rowKey={record=>record.id} />
+                <Table dataSource={this.state.list} columns={this.getColumns()} rowKey={record=>record.id}
+                       pagination={{
+                           current:this.state.pageIndex,
+                           showLessItems:true,
+                           total: this.state.total,
+                           pageSize: this.state.pageSize, //必须加上
+                           onChange: (page, size) => {
+                               console.log(page,size)
+                               this.getUserList(page, size)
+                           }
+                       }
+                       }
+                />
             </>
         );
     }

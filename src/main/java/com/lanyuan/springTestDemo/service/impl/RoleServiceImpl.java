@@ -1,5 +1,7 @@
 package com.lanyuan.springTestDemo.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lanyuan.springTestDemo.entity.Role;
 import com.lanyuan.springTestDemo.mapper.RoleMapper;
 import com.lanyuan.springTestDemo.mapper.myMapper.MyMapper;
@@ -24,7 +26,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public PageInfo<Role> getRoleList(Integer pageIndex, Integer pageSize) {
+        PageHelper.startPage(pageIndex,pageSize);
+        List<Role> roles = roleMapper.selectByExample(null);
+        return new PageInfo<Role>(roles,5);
+    }
+
+    @Override
     public int deleteRoleById(long roleid) {
+        myMapper.deleteRoleFromRoleMenu(roleid);
+        myMapper.deleteRoleFromUserRole(roleid);
         int i = roleMapper.deleteByPrimaryKey(roleid);
         return i;
     }
